@@ -1540,6 +1540,8 @@
 
     <!-- BACKGROUND INTERACTIVE NETWORK CONSTELLATION SCRIPT -->
     <script>
+        // HTML-escape text before it goes into innerHTML (typed commands, third-party API values)
+        function esc(v) { return String(v ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c])); }
         const meshCanvas = document.getElementById('network-mesh-canvas');
         const meshCtx = meshCanvas.getContext('2d');
         let meshNodes = [];
@@ -2238,7 +2240,7 @@
                 // Append line mirroring command
                 const group = document.createElement('div');
                 group.className = 'space-y-1.5';
-                group.innerHTML = `<div class="flex items-center space-x-2"><span class="text-cyber-accent">ashin@sec-app:~$</span> <span class="text-white">${rawLine}</span></div>`;
+                group.innerHTML = `<div class="flex items-center space-x-2"><span class="text-cyber-accent">ashin@sec-app:~$</span> <span class="text-white">${esc(rawLine)}</span></div>`;
 
                 const feedback = document.createElement('div');
                 feedback.className = 'text-slate-300 pl-4 border-l border-slate-800 leading-relaxed';
@@ -2577,7 +2579,7 @@
 
                     const group = document.createElement('div');
                     group.className = 'space-y-1.5';
-                    group.innerHTML = `<div class="flex items-center space-x-2"><span class="text-cyber-accent">ashin@sec-app:~$</span> <span class="text-white">${rawDisplay}</span></div>`;
+                    group.innerHTML = `<div class="flex items-center space-x-2"><span class="text-cyber-accent">ashin@sec-app:~$</span> <span class="text-white">${esc(rawDisplay)}</span></div>`;
                     const feedback = document.createElement('div');
                     feedback.className = 'text-slate-300 pl-4 border-l border-slate-800 leading-relaxed font-mono text-xs';
                     group.appendChild(feedback);
@@ -2850,8 +2852,8 @@
             color = color || 'text-cyber-accent';
             return '<div class="bg-cyber-bg/80 border border-slate-800 rounded-lg p-3 hover:border-cyber-accent/20 transition-all space-y-1.5 min-w-0">'
                  + '<div class="flex items-center gap-1.5 text-[9px] text-slate-500 uppercase tracking-wider">'
-                 + '<i class="' + icon + ' text-cyber-accent"></i> ' + label + '</div>'
-                 + '<p class="font-bold ' + color + ' text-[11px] break-all leading-snug" title="' + value + '">' + value + '</p>'
+                 + '<i class="' + icon + ' text-cyber-accent"></i> ' + esc(label) + '</div>'
+                 + '<p class="font-bold ' + color + ' text-[11px] break-all leading-snug" title="' + esc(value) + '">' + esc(value) + '</p>'
                  + '</div>';
         }
 
